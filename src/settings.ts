@@ -13,6 +13,7 @@ export interface PluginSettings {
     enableExperimentalWebSync?: boolean;
     breadcrumbDisplayOptions?: ("Page name" | "Page namespace" | "Parent blocks")[];
     includeParentContent?: boolean;
+    exportDbTaskMetadataToAnki?: boolean;
     renderClozeMarcosInLogseq?: boolean;
     hideClozeMarcosUntilHoverInLogseq?: boolean;
     addonsList?: string[];
@@ -56,6 +57,14 @@ export const addSettingsToLogseq = async () => {
             default: true,
             title: "Include parent content in cards? (Recommended: Enabled)",
             description: "When enabled, the parent blocks content will be shown in the card."
+        },
+        {
+            key: "exportDbTaskMetadataToAnki",
+            type: "boolean",
+            default: true,
+            title: "Export DB task metadata markers to Anki text? (Recommended: Enabled)",
+            description:
+                "When enabled, DB task status, priority, deadline, and scheduled values are written into the Text field as template-readable markers. Takes effect after the next sync."
         },
         {
             key: "logseqSideSettingsHeading",
