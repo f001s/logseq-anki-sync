@@ -64,7 +64,7 @@ export class ImageOcclusionNote extends Note {
     };
 
     public static async handleImageOcclusionOperation(block: BlockEntity | {uuid: string}) {
-        if (!LogseqAppInfoFetcher.checkHostAccess()) {
+        if (!LogseqAppInfoFetcher.checkCanAccessLocalAssets()) {
             await logseq.UI.showMsg(
                 "Opening Occlusion Editor is not supported in Logseq Web since plugin cannot read image files at the moment.",
                 "error"

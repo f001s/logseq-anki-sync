@@ -47,7 +47,7 @@ export class LogseqToAnkiSync {
         //     await logseq.UI.showMsg("Anki sync not supported in DB Graphs yet.\nDevelopment to support it is going on in db branch.", "error");
         //     return;
         // }
-        if (!LogseqAppInfoFetcher.checkHostAccess()) {
+        if (!LogseqAppInfoFetcher.checkCanAccessLocalAssets()) {
             const settings = LogseqProxy.Settings.getPluginSettings();
             if (!settings.enableExperimentalWebSync) {
                 await logseq.UI.showMsg(

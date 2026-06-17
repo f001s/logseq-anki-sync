@@ -34,4 +34,26 @@ export class LogseqAppInfoFetcher {
             return false;
         }
     }
+
+    /**
+     * Check if the plugin is running inside the Logseq desktop app.
+     *
+     * Recent Logseq desktop builds may isolate plugin iframes behind a separate
+     * lsp:// origin. In that case parent-window access is blocked even though
+     * desktop-only capabilities, such as local asset access, are still available.
+     */
+    static checkCurrentIsDesktopApp(): boolean {
+        try {
+            return /Logseq\/.+Electron\//.test(window.navigator.userAgent);
+        } catch {
+            return false;
+        }
+    }
+
+    static checkCanAccessLocalAssets(): boolean {
+        return (
+            LogseqAppInfoFetcher.checkCurrentIsDesktopApp() ||
+            LogseqAppInfoFetcher.checkHostAccess()
+        );
+    }
 }

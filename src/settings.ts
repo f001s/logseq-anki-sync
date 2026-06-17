@@ -286,7 +286,7 @@ export const addSettingsToLogseq = async () => {
     });
 
     // Show enableExperimentalWebSync setting only in web version
-    const isWebVersion = !LogseqAppInfoFetcher.checkHostAccess();
+    const isWebVersion = !LogseqAppInfoFetcher.checkCanAccessLocalAssets();
     logseq.provideStyle({
         key: "show-experimental-web-sync",
         style: isWebVersion
