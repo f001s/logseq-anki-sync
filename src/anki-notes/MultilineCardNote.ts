@@ -122,6 +122,11 @@ export class MultilineCardNote extends Note {
         return maxDepth;
     }
 
+    private shouldExportDbTaskMetadata(): boolean {
+        const {exportDbTaskMetadataToAnki} = LogseqProxy.Settings.getPluginSettings();
+        return exportDbTaskMetadataToAnki !== false;
+    }
+
     public async getClozedContentHTML(): Promise<HTMLFile> {
         let clozedContent = "";
         const clozedContentAssets: Set<string> = new Set();
@@ -144,23 +149,31 @@ export class MultilineCardNote extends Note {
         // Add the content of children blocks and cloze it if direction is <-> or ->
         let cloze_id = 1;
         const maxDepth = this.getChildrenMaxDepth();
+        const exportDbTaskMetadata = this.shouldExportDbTaskMetadata();
         const getChildrenListHTMLFile = async (childrenList: any, level = 0): Promise<HTMLFile> => {
             if (level >= maxDepth) return {html: "", assets: new Set<string>(), tags: []};
             const childrenListAssets = new Set<string>();
             let childrenListHTML = `\n<ul class="children-list left-border">`;
             for (const child of childrenList) {
-                const childProperties = _.get(child, "properties", {});
-                const dbTaskMetadata = getDbTaskMetadata(childProperties);
+                let dbTaskClasses = "";
+                let dbTaskAttributes = "";
+                let dbTaskMetadataHTML = "";
+                if (exportDbTaskMetadata) {
+                    const childProperties = _.get(child, "properties", {});
+                    const dbTaskMetadata = getDbTaskMetadata(childProperties);
+                    dbTaskClasses = getDbTaskMetadataClasses(dbTaskMetadata);
+                    dbTaskAttributes = getDbTaskMetadataAttributes(dbTaskMetadata);
+                    dbTaskMetadataHTML = renderDbTaskMetadata(dbTaskMetadata);
+                }
                 const childClasses = [
                     "children",
                     _.get(child, "properties['logseq.orderListType']") === "number"
                         ? "numbered"
                         : "",
-                    getDbTaskMetadataClasses(dbTaskMetadata)
+                    dbTaskClasses
                 ]
                     .filter(Boolean)
                     .join(" ");
-                const dbTaskAttributes = getDbTaskMetadataAttributes(dbTaskMetadata);
                 childrenListHTML += `\n<li class="${childClasses}"${dbTaskAttributes ? ` ${dbTaskAttributes}` : ""}>`;
                 const childContent = _.get(child, "content", "");
                 const sanitizedChildContent = escapeClozesAndMacroDelimiters(childContent);
@@ -177,7 +190,7 @@ export class MultilineCardNote extends Note {
                 sanitizedChildHTMLFileWithExtra.assets.forEach((asset) =>
                     childrenListAssets.add(asset)
                 );
-                sanitizedChildHTML += renderDbTaskMetadata(dbTaskMetadata);
+                sanitizedChildHTML += dbTaskMetadataHTML;
                 if (child.children.length > 0) {
                     const allChildrenHTMLFile = await getChildrenListHTMLFile(
                         child.children,

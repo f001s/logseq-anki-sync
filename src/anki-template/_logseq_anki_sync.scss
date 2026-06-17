@@ -161,6 +161,171 @@ h5 {
     margin-block-end: 0px;
 }
 
+.children-list .children > .logseq-cloze-placeholder {
+    display: inline-block;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
+}
+
+.children.logseq-db-task::before {
+    align-items: center;
+    background-color: transparent;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+    box-sizing: border-box;
+    content: "";
+    color: #8b949f;
+    display: inline-flex;
+    font-size: 0.72rem;
+    font-weight: 700;
+    height: 1rem;
+    justify-content: center;
+    left: -1.58rem;
+    line-height: 1;
+    position: absolute;
+    top: 0.32rem;
+    width: 1rem;
+}
+
+.children.logseq-db-task:hover::before {
+    text-shadow: none;
+    transform: none;
+}
+
+.children.logseq-db-task--backlog::before {
+    border-style: dashed;
+    color: #c5cbd3;
+}
+
+.children.logseq-db-task--todo::before {
+    color: #8b949f;
+}
+
+.children.logseq-db-task--doing::before {
+    background: linear-gradient(90deg, #eab308 0 50%, transparent 50%);
+    border-color: #eab308;
+    color: #eab308;
+}
+
+.children.logseq-db-task--in-review::before {
+    background-color: #228be6;
+    border-color: #228be6;
+    color: #fff;
+    content: "\21bb";
+    font-size: 0.68rem;
+}
+
+.children.logseq-db-task--done::before {
+    background-color: #5bbf8a;
+    border-color: #5bbf8a;
+    color: #fff;
+    content: "\2713";
+}
+
+.children.logseq-db-task--canceled::before {
+    color: #f28b93;
+    content: "\00d7";
+    font-size: 0.95rem;
+}
+
+.logseq-db-task-status {
+    display: none;
+}
+
+.logseq-db-task-meta {
+    color: #6b7280;
+    display: block;
+    margin-top: 0.12rem;
+    font-size: 0.75rem;
+    line-height: 1.25;
+}
+
+.logseq-db-task-meta__item {
+    display: inline;
+    white-space: nowrap;
+}
+
+.logseq-db-task-meta__item--priority {
+    display: inline-flex;
+    margin-right: 0.16rem;
+    vertical-align: -0.12rem;
+}
+
+.logseq-db-task-meta__item + .logseq-db-task-meta__item {
+    margin-left: 0.7rem;
+}
+
+.logseq-db-task-priority {
+    align-items: center;
+    color: #68707c;
+    display: inline-flex;
+    height: 1rem;
+    justify-content: center;
+    width: 1.1rem;
+}
+
+.logseq-db-task-priority__bars {
+    align-items: flex-end;
+    display: inline-flex;
+    gap: 0.12rem;
+    height: 0.84rem;
+    width: 0.92rem;
+}
+
+.logseq-db-task-priority__bar {
+    background-color: currentColor;
+    border-radius: 2px;
+    display: inline-block;
+    opacity: 0.28;
+    width: 0.17rem;
+}
+
+.logseq-db-task-priority__bar:nth-child(1) {
+    height: 0.28rem;
+}
+
+.logseq-db-task-priority__bar:nth-child(2) {
+    height: 0.46rem;
+}
+
+.logseq-db-task-priority__bar:nth-child(3) {
+    height: 0.64rem;
+}
+
+.logseq-db-task-priority__bar:nth-child(4) {
+    height: 0.82rem;
+}
+
+.logseq-db-task-priority--low .logseq-db-task-priority__bar:nth-child(-n + 1),
+.logseq-db-task-priority--medium .logseq-db-task-priority__bar:nth-child(-n + 2),
+.logseq-db-task-priority--high .logseq-db-task-priority__bar:nth-child(-n + 3) {
+    opacity: 1;
+}
+
+.logseq-db-task-priority--medium {
+    color: #5f6874;
+}
+
+.logseq-db-task-priority--high {
+    color: #4b5563;
+}
+
+.logseq-db-task-priority--urgent {
+    background-color: #ff8f4d;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    height: 1rem;
+    line-height: 1;
+    width: 1rem;
+}
+
+.logseq-db-task-priority__urgent-mark {
+    transform: translateY(-0.01rem);
+}
+
 /* --- logseq elements --- */
 .center {
     display: block;
@@ -482,6 +647,51 @@ body.nightMode ol:not(.children-list) {
 
 body.nightMode li:not(.children) {
     color: #bfbfbf;
+}
+
+body.nightMode .children.logseq-db-task::before {
+    background-color: transparent;
+    color: #b6c0cb;
+}
+
+body.nightMode .children.logseq-db-task--backlog::before {
+    color: #667381;
+}
+
+body.nightMode .children.logseq-db-task--todo::before {
+    color: #b6c0cb;
+}
+
+body.nightMode .children.logseq-db-task--doing::before {
+    background: linear-gradient(90deg, #facc15 0 50%, transparent 50%);
+    border-color: #facc15;
+    color: #facc15;
+}
+
+body.nightMode .children.logseq-db-task--in-review::before {
+    background-color: #60a5fa;
+    border-color: #60a5fa;
+    color: #1f2937;
+}
+
+body.nightMode .children.logseq-db-task--done::before {
+    background-color: #6ee7b7;
+    border-color: #6ee7b7;
+    color: #1f2937;
+}
+
+body.nightMode .children.logseq-db-task--canceled::before {
+    color: #fda4af;
+}
+
+body.nightMode .logseq-db-task-meta {
+    color: #e5e7eb;
+}
+
+body.nightMode .children-list .children > .logseq-cloze-placeholder {
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
 }
 
 body.nightMode .extra {

@@ -148,6 +148,13 @@ function handleShowAllTestOneTagForClozesAndHighlightAndMultilineIncrementalCard
             if (el.classList.contains("cloze-inactive-hidden")) return;
             el.classList.add("cloze-inactive-hidden");
             el.setAttribute("data-html-content", el.innerHTML);
+            if (window.type === "multiline_card") {
+                el.classList.add("logseq-cloze-placeholder");
+                el.innerHTML = "[...]";
+                el.style.color = "";
+                el.style.cursor = "pointer";
+                return;
+            }
             el.innerHTML = "[...]";
             el.style.color = "rgb(115, 115, 115)";
             el.style.cursor = "pointer";
@@ -155,7 +162,9 @@ function handleShowAllTestOneTagForClozesAndHighlightAndMultilineIncrementalCard
         function showElement(el) {
             if (!el.classList.contains("cloze-inactive-hidden")) return;
             el.classList.remove("cloze-inactive-hidden");
+            el.classList.remove("logseq-cloze-placeholder");
             el.innerHTML = el.getAttribute("data-html-content");
+            el.style.color = "";
         }
         function toggleVisibility(el) {
             if (el.classList.contains("cloze-inactive-hidden")) {

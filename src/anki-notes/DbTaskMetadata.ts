@@ -161,23 +161,34 @@ export function getDbTaskMetadataAttributes(metadata: DbTaskMetadata): string {
         .join(" ");
 }
 
+function renderPriorityMetadata(priority: string): string {
+    const normalizedPriority = normalizeAttributeValue(priority);
+    const accessibleLabel = escapeHtml(`Priority: ${priority}`);
+
+    if (normalizedPriority === "urgent") {
+        return `<span class="logseq-db-task-meta__item logseq-db-task-meta__item--priority" data-logseq-task-meta="priority"><span class="logseq-db-task-priority logseq-db-task-priority--urgent" aria-label="${accessibleLabel}" title="${accessibleLabel}"><span class="logseq-db-task-priority__urgent-mark" aria-hidden="true">!</span></span></span>`;
+    }
+
+    return `<span class="logseq-db-task-meta__item logseq-db-task-meta__item--priority" data-logseq-task-meta="priority"><span class="logseq-db-task-priority logseq-db-task-priority--${normalizedPriority}" aria-label="${accessibleLabel}" title="${accessibleLabel}"><span class="logseq-db-task-priority__bars" aria-hidden="true"><span class="logseq-db-task-priority__bar"></span><span class="logseq-db-task-priority__bar"></span><span class="logseq-db-task-priority__bar"></span><span class="logseq-db-task-priority__bar"></span></span></span></span>`;
+}
+
 export function renderDbTaskMetadata(metadata: DbTaskMetadata): string {
     if (!hasDbTaskMetadata(metadata)) return "";
 
-    const labels: Array<[keyof DbTaskMetadata, string]> = [
-        ["priority", "Priority"],
-        ["deadline", "Deadline"],
-        ["scheduled", "Scheduled"]
-    ];
-
-    const items = labels
-        .filter(([key]) => metadata[key])
-        .map(
-            ([key, label]) =>
-                `<span class="logseq-db-task-meta__item logseq-db-task-meta__item--${key}" data-logseq-task-meta="${key}">${label}: ${escapeHtml(
-                    metadata[key] as string
-                )}</span>`
-        )
+    const items = [
+        metadata.priority ? renderPriorityMetadata(metadata.priority) : "",
+        metadata.deadline
+            ? `<span class="logseq-db-task-meta__item logseq-db-task-meta__item--deadline" data-logseq-task-meta="deadline">Deadline: ${escapeHtml(
+                  metadata.deadline
+              )}</span>`
+            : "",
+        metadata.scheduled
+            ? `<span class="logseq-db-task-meta__item logseq-db-task-meta__item--scheduled" data-logseq-task-meta="scheduled">Scheduled: ${escapeHtml(
+                  metadata.scheduled
+              )}</span>`
+            : ""
+    ]
+        .filter(Boolean)
         .join("");
 
     return items ? `<span class="logseq-db-task-meta">${items}</span>` : "";
